@@ -391,30 +391,34 @@ const closePopups = () => {
 closePopups() 
 
 const openSub = document.querySelector('a[href="#subscribe"]')
-openSub.addEventListener('click',(e)=>{
-    e.preventDefault()
-    const subForm = document.querySelector('.subform')
-    const tl = gsap.timeline(); 
-    subForm.style.display = "block"
-    tl.to(subForm, {
-        duration: .3,
-        opacity: 1
-    }); 
-})
+if(openSub){
+    openSub.addEventListener('click',(e)=>{
+        e.preventDefault()
+        const subForm = document.querySelector('.subform')
+        const tl = gsap.timeline(); 
+        subForm.style.display = "block"
+        tl.to(subForm, {
+            duration: .3,
+            opacity: 1
+        }); 
+    })
+}
 const closeSub = document.querySelector('.close-subform')
-closeSub.addEventListener('click',(e)=>{
-    //e.preventDefault()
-    const subForm = document.querySelector('.subform')
-    const tl = gsap.timeline({
-        onComplete: ()=>{ 
-            subForm.style.display = "none"
-        }
-    }); 
-    tl.to(subForm, {
-        duration: .3,
-        opacity: 0
-    }); 
-})
+if(closeSub){
+    closeSub.addEventListener('click',(e)=>{
+        //e.preventDefault()
+        const subForm = document.querySelector('.subform')
+        const tl = gsap.timeline({
+            onComplete: ()=>{ 
+                subForm.style.display = "none"
+            }
+        }); 
+        tl.to(subForm, {
+            duration: .3,
+            opacity: 0
+        }); 
+    })
+}    
 
 function mobileFilters(){
     const mobileFilters = document.querySelectorAll('.mobile-filters .filters-wrap')
