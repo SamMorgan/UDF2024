@@ -1,6 +1,6 @@
-<?php if( have_rows('modules') ):
+<?php if( have_rows('modules', $id) ):
 
-    while ( have_rows('modules') ) : the_row();
+    while ( have_rows('modules', $id) ) : the_row();
 
         if( get_row_layout() == 'single_column' ): ?>
             <div class="lrg-txt single-col-module"><?php the_sub_field('text');?></div>

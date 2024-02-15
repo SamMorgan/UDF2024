@@ -682,7 +682,7 @@ const openNews = document.querySelector('a[href="#news-updates"]')
 if(openNews){
     openNews.addEventListener('click',(e)=>{
         e.preventDefault();
-        fetch('/')
+        fetch(window.location.href)
             .then(response=>{
                 return response.text()
             })

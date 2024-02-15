@@ -106,7 +106,7 @@ if(is_page() && !in_array($post->ID, array(8,10,12,14,16,18,20,22,369))){ ?>
     <div class="section-content-wrap">
         <?php while (have_posts()) : the_post(); ?>
             <div class="lrg-txt"><?php the_content();?></div>
-            <?php include 'includes/modules.php';?>
+            <?php $id = $post->ID; include 'includes/modules.php';?>
         <?php endwhile;?>      
     </div>    
 </div>

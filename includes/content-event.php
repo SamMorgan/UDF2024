@@ -5,7 +5,7 @@
         <h1><?php the_title();?></h1> 
         <h2><?php the_field('host');?><br><?php the_field('visible_date');?></h2>
         <div class="lrg-txt"><?php the_content();?></div>
-        <?php include 'modules.php';?>
+        <?php $id = $post->ID; include 'modules.php';?>
     <?php endwhile;?>      
     
 

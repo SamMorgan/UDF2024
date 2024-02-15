@@ -459,16 +459,36 @@ function topic_tax() {
 add_action( 'init', 'topic_tax', 0 );
 
 
+// function check_filters($filter_names,$page_id){
+// 	$filters = array();
+// 	//if(isset($_GET[$filter_names[0]]) || isset($_GET[$filter_names[1]])){
+// 	if(isset($_GET[$filter_names[0]])){	
+//         foreach($filter_names as $filter_name){
+//             if($_GET[$filter_name]){
+//                 $filters[$filter_name] = $_GET[$filter_name];
+//             }
+//         }
+// 		//return $filters;    
+//     }else{
+//         if(!is_page($page_id) && isset($_COOKIE['filters-knowledge-sharing'])) {
+//             $url = parse_url($_COOKIE['filters-knowledge-sharing']);
+//             if($url['query']){
+//                 parse_str($url['query'], $filters);	
+//             }
+//         } 
+// 		//return $filters;   
+//     }
+// 	return $filters; 
+// }
 function check_filters($filter_names,$page_id){
-	$filters = array();
-	//if(isset($_GET[$filter_names[0]]) || isset($_GET[$filter_names[1]])){
-	if(isset($_GET[$filter_names[0]])){	
+	if(isset($_GET[$filter_names[0]]) || isset($_GET[$filter_names[1]])){
+		$filters = array();
         foreach($filter_names as $filter_name){
             if($_GET[$filter_name]){
                 $filters[$filter_name] = $_GET[$filter_name];
             }
         }
-		//return $filters;    
+		return $filters;    
     }else{
         if(!is_page($page_id) && isset($_COOKIE['filters-knowledge-sharing'])) {
             $url = parse_url($_COOKIE['filters-knowledge-sharing']);
@@ -476,9 +496,8 @@ function check_filters($filter_names,$page_id){
                 parse_str($url['query'], $filters);	
             }
         } 
-		//return $filters;   
+		return $filters;   
     }
-	return $filters; 
 }
 
 function knowledge_filters($filter){ ?>

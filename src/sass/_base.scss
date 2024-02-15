@@ -590,6 +590,10 @@ news-updates {
         margin: auto; 
         background: #fff;
         position: relative;
+        @media (max-aspect-ratio: 10/11) {
+            width: 85vmin;
+            height: 110vmin;
+        }
         .scroller {
             overflow: auto;
             width: 100%;
@@ -618,6 +622,9 @@ news-updates {
             .close {
                 cursor: pointer;
                 background-image: $x;
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: contain;
                 width: 2rem;
                 height: 2rem;
                 display: block;
@@ -631,6 +638,10 @@ news-updates {
             & > div {
                 padding: 2rem 0;
                 border-top: 1px dashed #000;
+            }
+            &:first-child > div {
+                border-top: none;
+                padding: 0 0 2rem;
             }
         } 
         img {

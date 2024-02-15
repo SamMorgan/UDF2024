@@ -50,7 +50,6 @@
 .cta,
 .view-more a,
 .site-footer ul li a {
-    display: block;
     border: 1px solid #000;
     border-radius: 0.25rem;
     padding: 0.5rem 0.75rem;
@@ -60,6 +59,10 @@
     font-size: 1.25rem;
     line-height: 1;
     text-align: center;
+}
+.cta,
+.view-more a {
+    display: block;
 }
 @media (hover: hover) and (pointer: fine) {
     .cta,
@@ -319,7 +322,8 @@
         left:-100%;
     } 
     .cta,
-    .view-more a { 
+    .view-more a,
+    .site-footer ul li a { 
         border-radius: .5rem;
         padding: 1.2rem;
         border: .75px solid #000;
