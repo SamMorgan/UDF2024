@@ -20,7 +20,7 @@
             $member_paypal_links = $member['paypal_links'];
 
             if($member_heading){
-                echo '<h2 class="sub-heading">'.$member_heading.'</h2>';
+                echo '<h3 class="subheading">'.$member_heading.'</h3>';
             }
             if($member_text){
                 echo '<div class="lrg-txt">'.$member_text.'</div>';
