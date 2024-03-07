@@ -37,7 +37,7 @@ if(isset($_COOKIE['openPages'])) {
 
 <?php foreach($pages as $page) { ?>
     <section id="<?php echo $page->post_name;?>" class="section-wrap<?php 
-        $id = $page->ID;
+        $page_id = $page->ID;
         if(is_page($page->ID) || is_singular('event') && $page->ID === 22 || $open_pages && in_array($page->ID,$open_pages)){ echo ' open';}?>" style="--section-color:<?php the_field('section_colour',$page->ID);?>">
         <div class="section-header h1">
             <a class="section-link" href="<?php echo get_permalink($page->ID);?>">
@@ -54,29 +54,28 @@ if(isset($_COOKIE['openPages'])) {
         </div> 
         <div class="section-content">
             <?php 
-                if($open_pages && in_array(8,$open_pages) && $id === 8 || $id === 8 && is_page(8)){
+                if($open_pages && in_array(8,$open_pages) && $page_id === 8 || $page_id === 8 && is_page(8)){
                     include 'includes/content-public-interest.php';
                 }
-                if($open_pages && in_array(10,$open_pages) && $id === 10 || $id === 10 && is_page(10)){
+                if($open_pages && in_array(10,$open_pages) && $page_id === 10 || $page_id === 10 && is_page(10)){
                     include 'includes/content-knowledge-sharing.php';
                 }
-                //if($open_pages && in_array(22,$open_pages) && $id === 22 || $id === 22 && is_page(22) || $id === 22 && is_singular('event')){
-                if($open_pages && in_array(22,$open_pages) && $id === 22 || $id === 22 && is_page(22)){    
+                if($open_pages && in_array(22,$open_pages) && $page_id === 22 || $page_id === 22 && is_page(22)){    
                     include 'includes/content-public-conversations.php';
                 }
-                if($open_pages && in_array(12,$open_pages) && $id === 12 || $id === 12 && is_page(12)){
+                if($open_pages && in_array(12,$open_pages) && $page_id === 12 || $page_id === 12 && is_page(12)){
                     include 'includes/content-research-advocacy.php';
                 }
-                if($open_pages && in_array(14,$open_pages) && $id === 14 || $id === 14 && is_page(14)){
+                if($open_pages && in_array(14,$open_pages) && $page_id === 14 || $page_id === 14 && is_page(14)){
                     include 'includes/content-education.php';
                 }
-                if($open_pages && in_array(16,$open_pages) && $id === 16 || $id === 16 && is_page(16)){
+                if($open_pages && in_array(16,$open_pages) && $page_id === 16 || $page_id === 16 && is_page(16)){
                     include 'includes/content-mentorship-support.php';
                 }
-                if($open_pages && in_array(18,$open_pages) && $id === 18 || $id === 18 && is_page(18)){
+                if($open_pages && in_array(18,$open_pages) && $page_id === 18 || $page_id === 18 && is_page(18)){
                     include 'includes/content-change.php';
                 }
-                if($open_pages && in_array(20,$open_pages) && $id === 20 || $id === 20 && is_page(20) || $id === 20 && $post->post_parent === 20){
+                if($open_pages && in_array(20,$open_pages) && $page_id === 20 || $page_id === 20 && is_page(20) || $page_id === 20 && $post->post_parent === 20){
                     include 'includes/content-udf-australia.php';
                 }
             ?>

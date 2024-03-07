@@ -115,6 +115,8 @@
                 //echo '<div class="open-pagination-popup view-more filter-content">'.$next_link.'</div>';
                 echo '<div class="open-pagination-popup view-more filter-content"><a class="cta" href="'.get_permalink(22).'?view-more=1'.$query.'">View More</a></div>';
             }
+
+            wp_reset_query();
         ?>    
     </div>              
 </div>    

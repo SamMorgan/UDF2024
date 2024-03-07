@@ -459,6 +459,45 @@ function topic_tax() {
 add_action( 'init', 'topic_tax', 0 );
 
 
+function report_tag() {
+
+	$labels = array(
+		'name'                       => _x( 'Tags', 'Taxonomy General Name', 'text_domain' ),
+		'singular_name'              => _x( 'Tag', 'Taxonomy Singular Name', 'text_domain' ),
+		'menu_name'                  => __( 'Tag', 'text_domain' ),
+		'all_items'                  => __( 'All Tags', 'text_domain' ),
+		'parent_item'                => __( 'Parent Tag', 'text_domain' ),
+		'parent_item_colon'          => __( 'Parent Tag:', 'text_domain' ),
+		'new_item_name'              => __( 'New Tag Name', 'text_domain' ),
+		'add_new_item'               => __( 'Add New Tag', 'text_domain' ),
+		'edit_item'                  => __( 'Edit Tag', 'text_domain' ),
+		'update_item'                => __( 'Update Tag', 'text_domain' ),
+		'view_item'                  => __( 'View Tag', 'text_domain' ),
+		'separate_items_with_commas' => __( 'Separate Tags with commas', 'text_domain' ),
+		'add_or_remove_items'        => __( 'Add or remove Tags', 'text_domain' ),
+		'choose_from_most_used'      => __( 'Choose from the most used', 'text_domain' ),
+		'popular_items'              => __( 'Popular Tags', 'text_domain' ),
+		'search_items'               => __( 'Search Tags', 'text_domain' ),
+		'not_found'                  => __( 'Not Found', 'text_domain' ),
+		'no_terms'                   => __( 'No Tags', 'text_domain' ),
+		'items_list'                 => __( 'Tags list', 'text_domain' ),
+		'items_list_navigation'      => __( 'Tags list navigation', 'text_domain' ),
+	);
+	$args = array(
+		'labels'                     => $labels,
+		'hierarchical'               => true,
+		'public'                     => true,
+		'show_ui'                    => true,
+		'show_admin_column'          => true,
+		'show_in_nav_menus'          => true,
+		'show_tagcloud'              => true,
+	);
+	register_taxonomy( 'report-tag', array( 'report' ), $args );
+
+}
+add_action( 'init', 'report_tag', 0 );
+
+
 // function check_filters($filter_names,$page_id){
 // 	$filters = array();
 // 	//if(isset($_GET[$filter_names[0]]) || isset($_GET[$filter_names[1]])){
@@ -481,23 +520,33 @@ add_action( 'init', 'topic_tax', 0 );
 // 	return $filters; 
 // }
 function check_filters($filter_names,$page_id){
-	if(isset($_GET[$filter_names[0]]) || isset($_GET[$filter_names[1]])){
-		$filters = array();
+	$filters = array();
+	if(isset($_GET[$filter_names[0]]) || (count($filter_names) > 1 && isset($_GET[$filter_names[1]]))){
+		
         foreach($filter_names as $filter_name){
-            if($_GET[$filter_name]){
+            if(isset($_GET[$filter_name])){
                 $filters[$filter_name] = $_GET[$filter_name];
             }
         }
-		return $filters;    
+		//return $filters;    
     }else{
-        if(!is_page($page_id) && isset($_COOKIE['filters-knowledge-sharing'])) {
+        //if(!is_page($page_id) && isset($_COOKIE['filters-knowledge-sharing'])) {
+		if($page_id === 10 && isset($_COOKIE['filters-knowledge-sharing'])) {	
             $url = parse_url($_COOKIE['filters-knowledge-sharing']);
             if($url['query']){
                 parse_str($url['query'], $filters);	
+				//return $filters;  
             }
         } 
-		return $filters;   
+		if($page_id === 12 && isset($_COOKIE['filters-research-advocacy'])) {	
+            $url = parse_url($_COOKIE['filters-research-advocacy']);
+            if($url['query']){
+                parse_str($url['query'], $filters);	
+				//return $filters;  
+            }
+        } 
     }
+	return $filters;
 }
 
 function knowledge_filters($filter){ ?>
@@ -568,16 +617,75 @@ function knowledge_filters($filter){ ?>
 <?php }
 
 
+function tag_filters(){ ?>
+    <div class="filters-wrap">
+        <span class="label">Sort by tag</span>
+        <div class="filters-list">
+        <?php 
+            $type_query = new WP_Term_Query( 
+                array( 
+                    'taxonomy' => 'report-tag',
+                    //'include' => $type_ids 
+                ) 
+            );
+
+			$filters = check_filters(array('report-tag'),12);
+			// $filters = null;
+			// if(isset($_GET['tag'])){
+			// 	$filters = $_GET['tag'];    
+			// }else{
+			// 	if(!is_page(12) && isset($_COOKIE['filters-research-advocacy'])) {
+			// 		$url = parse_url($_COOKIE['filters-research-advocacy']);
+			// 		if($url['query']){
+			// 			parse_str($url['query'], $filters);	
+			// 		}
+			// 	} 
+			// 	//return $filters;   
+			// }
+
+            if ( ! empty( $type_query->terms ) ) {
+                foreach ( $type_query->terms as $type ) {
+                    $query = '';
+                    $active = '';
+
+					$query = '?tag='.$type->slug;
+
+					// if(isset($filters) && isset($filters['tag'])){  	
+					// 	$curr_types = explode(',',$filters['tag']);
+					// 	$index = array_search($type->slug, $curr_types);
+					// 	if($index !== false){
+					// 		$active = ' active';
+					// 		$query = '';
+					// 	}
+                    // }
+					if(count($filters) !== 0 && isset($filters['tag']) && $filters['tag'] === $type->slug){
+						$active = ' active';
+						$query = '';
+					}
+                    
+
+					// if(isset($_GET['view-more'])){
+					// 	$query .= $prefix.'&view-more=1';
+					// }
+                    echo '<a class="filter'.$active.'" href="'.get_permalink(12).$query.'">'.$type->name.'</a>';
+                } 
+            }                
+        ?>
+        </div> 
+    </div>
+<?php }
+
+
 function convo_filters(){
 	$filter_names = array('event-status');
     $filter = check_filters($filter_names,22);
 
     $upcoming_filter = '<a class="filter" href="'.get_permalink(22).'?event-status=upcoming">Upcoming</a>';
-    if($filter && $filter['event-status'] === 'upcoming'){ 
+    if(count($filter) !== 0 && isset($filter['event-status']) && $filter['event-status'] === 'upcoming'){ 
         $upcoming_filter = '<a class="filter active" href="'.get_permalink(22).'">Upcoming</a>';
     }
     $past_filter = '<a class="filter" href="'.get_permalink(22).'?event-status=past">Past</a>';
-    if($filter && $filter['event-status'] === 'past'){ 
+    if(count($filter) !== 0 && isset($filter['event-status']) && $filter['event-status'] === 'past'){ 
         $past_filter = '<a class="filter active" href="'.get_permalink(22).'">past</a>';
     }
     return '<div class="filters-wrap"><span class="label">Sort by type:</span><div class="filters-list">'.$upcoming_filter.$past_filter.'</div></div>';

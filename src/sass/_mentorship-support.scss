@@ -5,4 +5,9 @@
 		margin-top: 5rem;
 		text-transform: uppercase;
 	}
+	p a {
+		text-decoration: underline;
+		text-underline-offset: .13em;
+		text-decoration-thickness: 1px;
+	}
 }

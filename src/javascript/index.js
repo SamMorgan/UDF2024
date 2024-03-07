@@ -38,9 +38,10 @@ const getCookie = (cname)=>{
     return "";
 }
 
-const setCookie = (cname, cvalue, exdays)=>{
+const setCookie = (cname, cvalue, exMins)=>{
     const d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    //d.setTime(d.getTime() + (exMins * 24 * 60 * 60 * 1000));
+    d.setTime(d.getTime()+(exMins*60*1000));
     let expires = "expires="+d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
@@ -180,7 +181,7 @@ function filterFunc(){
                         })
                         .then(html=>{    
                             const doc = document.createElement("div");
-                            doc.innerHTML = html.data;
+                            doc.innerHTML = html;
 
                             const sectionContentEl = doc.querySelector('#' + sectionWrap.id + ' .section-content');
 
@@ -202,8 +203,6 @@ function filterFunc(){
                                     openPaginationFunc()
                                 }
                             });
-
-                            //console.log(filter, filter.href)
 
                             updateUrl(filter.href,doc)
 
@@ -448,6 +447,61 @@ function mobSubpageNav(){
 }
 mobSubpageNav()
 
+const openSection = (sectionLink) => {
+    const sectionWrap = sectionLink.closest('.section-wrap');
+    const sectionContentWrap = sectionWrap.querySelector('.section-content');
+    
+    sectionWrap.classList.add('open'); 
+
+    //http.get(sectionLink.href).then(function (html) {
+    fetch(sectionLink.href)
+        .then(response=>{
+            return response.text()
+        })
+        .then(html=>{    
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, "text/html"); 
+            // const doc = document.createElement("div");
+            // doc.innerHTML = html.data;
+            const sectionContent = doc.querySelector('#'+sectionWrap.id +' .section-content > *');
+
+            sectionContentWrap.style.height = 0
+            sectionContentWrap.style.opacity = 0
+
+            sectionContentWrap.appendChild(sectionContent);
+
+            updateUrl(sectionLink.href,doc)
+
+            // let openPages = getCookie('openPages') ? getCookie('openPages').split(',') : []
+            // openPages.push(sectionWrap.querySelector('.close-section').dataset.path)
+            openPages.push(sectionWrap.querySelector('.close-section').dataset.path)
+            setCookie("openPages", openPages, 30); 
+            
+            localStorage.setItem('lastOpened', sectionWrap.id);
+
+            const tl = gsap.timeline({
+                onComplete: ()=>{ 
+                    pageFunctions()
+                    openPopups()
+                    filterFunc()
+                    mobileFilters()
+                    mobSubpageNav()
+                    fadeInImgs()
+                    openPaginationFunc()
+                }
+            });
+
+            tl.to(sectionContentWrap, {
+                duration: .6,
+                height: "auto"
+            }).to(sectionContentWrap, {
+                duration: .3,
+                opacity: 1
+            });
+    
+    });
+}
+
 const sectionLinks = document.querySelectorAll('.section-link')
 if(sectionLinks){
     sectionLinks.forEach((sectionLink)=> {
@@ -457,58 +511,59 @@ if(sectionLinks){
         }); 
         sectionLink.addEventListener('click',(e)=>{
             e.preventDefault();
-            const sectionWrap = sectionLink.closest('.section-wrap');
-            const sectionContentWrap = sectionWrap.querySelector('.section-content');
+            openSection(sectionLink)
+            // const sectionWrap = sectionLink.closest('.section-wrap');
+            // const sectionContentWrap = sectionWrap.querySelector('.section-content');
             
-            sectionWrap.classList.add('open'); 
+            // sectionWrap.classList.add('open'); 
 
-            //http.get(sectionLink.href).then(function (html) {
-            fetch(sectionLink.href)
-                .then(response=>{
-                    return response.text()
-                })
-                .then(html=>{    
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(html, "text/html"); 
-                    // const doc = document.createElement("div");
-                    // doc.innerHTML = html.data;
-                    const sectionContent = doc.querySelector('#'+sectionWrap.id +' .section-content > *');
+            // //http.get(sectionLink.href).then(function (html) {
+            // fetch(sectionLink.href)
+            //     .then(response=>{
+            //         return response.text()
+            //     })
+            //     .then(html=>{    
+            //         const parser = new DOMParser();
+            //         const doc = parser.parseFromString(html, "text/html"); 
+            //         // const doc = document.createElement("div");
+            //         // doc.innerHTML = html.data;
+            //         const sectionContent = doc.querySelector('#'+sectionWrap.id +' .section-content > *');
 
-                    sectionContentWrap.style.height = 0
-                    sectionContentWrap.style.opacity = 0
+            //         sectionContentWrap.style.height = 0
+            //         sectionContentWrap.style.opacity = 0
 
-                    sectionContentWrap.appendChild(sectionContent);
+            //         sectionContentWrap.appendChild(sectionContent);
 
-                    updateUrl(sectionLink.href,doc)
+            //         updateUrl(sectionLink.href,doc)
 
-                    // let openPages = getCookie('openPages') ? getCookie('openPages').split(',') : []
-                    // openPages.push(sectionWrap.querySelector('.close-section').dataset.path)
-                    openPages.push(sectionWrap.querySelector('.close-section').dataset.path)
-                    setCookie("openPages", openPages, 30); 
+            //         // let openPages = getCookie('openPages') ? getCookie('openPages').split(',') : []
+            //         // openPages.push(sectionWrap.querySelector('.close-section').dataset.path)
+            //         openPages.push(sectionWrap.querySelector('.close-section').dataset.path)
+            //         setCookie("openPages", openPages, 30); 
                     
-                    localStorage.setItem('lastOpened', sectionWrap.id);
+            //         localStorage.setItem('lastOpened', sectionWrap.id);
 
-                    const tl = gsap.timeline({
-                        onComplete: ()=>{ 
-                            pageFunctions()
-                            openPopups()
-                            filterFunc()
-                            mobileFilters()
-                            mobSubpageNav()
-                            fadeInImgs()
-                            openPaginationFunc()
-                        }
-                    });
+            //         const tl = gsap.timeline({
+            //             onComplete: ()=>{ 
+            //                 pageFunctions()
+            //                 openPopups()
+            //                 filterFunc()
+            //                 mobileFilters()
+            //                 mobSubpageNav()
+            //                 fadeInImgs()
+            //                 openPaginationFunc()
+            //             }
+            //         });
 
-                    tl.to(sectionContentWrap, {
-                        duration: .6,
-                        height: "auto"
-                    }).to(sectionContentWrap, {
-                        duration: .3,
-                        opacity: 1
-                    });
+            //         tl.to(sectionContentWrap, {
+            //             duration: .6,
+            //             height: "auto"
+            //         }).to(sectionContentWrap, {
+            //             duration: .3,
+            //             opacity: 1
+            //         });
             
-            });
+            // });
         })
     });
 }    
@@ -702,3 +757,28 @@ if(openNews){
             });
     })
 }        
+
+
+const memberBtn = document.querySelector('a[href="#become-a-member"]')
+if(memberBtn){
+    memberBtn.addEventListener('click',(e)=>{
+        e.preventDefault()
+        const memberEls = document.querySelectorAll('#become-a-member')
+        if(memberEls.length > 0){
+            const memberEl = memberEls[memberEls.length - 1]
+            memberEl.scrollIntoView({
+                behavior: 'smooth'
+            });
+        }else{
+            openSection(document.querySelector('#urban-design-forum-australia .section-link'))
+            setTimeout(()=>{
+                const memberEl = document.querySelector('#become-a-member')
+                if(memberEl){
+                    memberEl.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            },1000)
+        }
+    })
+}
