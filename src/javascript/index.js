@@ -210,6 +210,8 @@ function filterFunc(){
                                 sectionWrap.querySelector('.section-link').href = filter.href
                             }
 
+                            console.log(filter.href)
+
                             setCookie('filters-'+sectionWrap.id,filter.href,30)
 
             

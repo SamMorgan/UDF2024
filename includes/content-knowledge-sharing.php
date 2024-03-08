@@ -25,7 +25,8 @@
                 //$filter_names = array('type','topic');
                 //if(isset($_GET[$filter_names[0]]) || isset($_GET[$filter_names[1]])){
                 $query = "";
-                if(count($filters) !== 0){    
+                //if(count($filters) !== 0){
+                if(isset($filters)){             
                     $query = "&";
                     $tax_arrays = array();
                     foreach($filter_names as $filter_name){

@@ -131,9 +131,9 @@ footer {
     &.open {
         .section-header {
 
-            //h2 {
-            //    @include ag-book-condensed-bold;
-            //}
+            h2 {
+               @include ag-book-condensed-bold;
+            }
             &:after {
                 transform: rotate(90deg);
             }
@@ -382,6 +382,14 @@ footer {
             }
         }
     }
+    .section-wrap.open .section-header {
+        .rollover {
+            display: none;
+        }
+        &:hover::after {
+            border-left: 2rem solid #000;
+        }
+    }    
 
     .index article a {
         // .imgwrap {
@@ -671,38 +679,41 @@ news-updates {
     }
 
     .popup {
-        width: 85vmin;
-        height: 85vmin;
+        // width: 85vmin;
+        // height: 85vmin;
+        width:60vw;
+        height: 85vh;
         margin: auto;
         background: #fff;
         position: relative;
-
+        overflow: auto;
         @media (max-aspect-ratio: 10/12) {
             width: 85vmin;
             height: 110vmin;
         }
 
         .scroller {
-            overflow: auto;
             width: 100%;
             height: 100%;
             top: 0;
             left: 0;
             position: absolute;
-            padding: 5rem 0;
+            padding: 11rem 0 0;
         }
 
         .header {
-            position: absolute;
+            position: sticky;
             top: 0;
             width: 100%;
             background: #fff;
             z-index: 1;
             display: flex;
             justify-content: space-between;
-            padding: .5rem 1rem;
+            padding: 0 2rem;
             align-items: center;
-
+            height:11vh;
+            max-height: 7.5rem;
+            min-height: 5.875rem;
             h2 {
                 font-size: 4rem;
                 font-style: normal;
@@ -726,7 +737,7 @@ news-updates {
         }
 
         .news-item {
-            padding: 0 5rem;
+            padding: 0 11rem;
 
             &>div {
                 padding: 2rem 0;
@@ -751,5 +762,13 @@ news-updates {
             font-size: 1.5rem;
             line-height: 1.33;
         }
+        @media #{ $lt-phone } {
+            .scroller {
+                padding: 7rem 0 0;
+            }
+            .news-item {
+                padding: 0 2rem;
+            }    
+        }    
     }
 }

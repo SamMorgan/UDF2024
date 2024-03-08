@@ -27,6 +27,7 @@
                         $events_arr = array(
                             'post_type' => 'event',
                             'paged' => $paged,
+                            //'posts_per_page' => 9,
                             'order'	=> 'ASC',
                             // 'orderby' => 'meta_value',
                             // 'meta_key' => 'event_date',
@@ -65,6 +66,7 @@
                                 $events_arr = array(
                                     'post_type' => 'event',
                                     'paged' => $paged,
+                                    //'posts_per_page' => 9,
                                     'order'	=> 'ASC',
                                     'orderby' => 'menu_order',
                                     'meta_query'  => array(
@@ -80,6 +82,7 @@
                                 $events_arr = array(
                                     'post_type' => 'event',
                                     'paged' => $paged,
+                                    //'posts_per_page' => 9,
                                     'order'	=> 'ASC',
                                     'orderby' => 'menu_order',
                                     'meta_query'  => array(
@@ -98,14 +101,16 @@
                                     )
                                 );
                             }    
-                        }  
+                        } 
+                         
+                        $events_query = new WP_Query($events_arr); 
 
                         if($events_query->have_posts()) : 
                             while ( $events_query->have_posts() ) : $events_query->the_post(); 
                                 include 'event-card.php';  
                             endwhile;
                         endif;
-                        wp_reset_query();
+                        //wp_reset_query();
                     ?>
                 </div>
                 <?php 

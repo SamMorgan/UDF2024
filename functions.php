@@ -520,33 +520,33 @@ add_action( 'init', 'report_tag', 0 );
 // 	return $filters; 
 // }
 function check_filters($filter_names,$page_id){
-	$filters = array();
+	//$filters = array();
 	if(isset($_GET[$filter_names[0]]) || (count($filter_names) > 1 && isset($_GET[$filter_names[1]]))){
-		
+		$filters = array();
         foreach($filter_names as $filter_name){
             if(isset($_GET[$filter_name])){
                 $filters[$filter_name] = $_GET[$filter_name];
             }
         }
-		//return $filters;    
+		return $filters;    
     }else{
         //if(!is_page($page_id) && isset($_COOKIE['filters-knowledge-sharing'])) {
 		if($page_id === 10 && isset($_COOKIE['filters-knowledge-sharing'])) {	
             $url = parse_url($_COOKIE['filters-knowledge-sharing']);
-            if($url['query']){
+            if(isset($url['query'])){
                 parse_str($url['query'], $filters);	
-				//return $filters;  
+				return $filters;  
             }
         } 
 		if($page_id === 12 && isset($_COOKIE['filters-research-advocacy'])) {	
             $url = parse_url($_COOKIE['filters-research-advocacy']);
-            if($url['query']){
+            if(isset($url['query'])){
                 parse_str($url['query'], $filters);	
-				//return $filters;  
+				return $filters;  
             }
         } 
     }
-	return $filters;
+	//return $filters;
 }
 
 function knowledge_filters($filter){ ?>
@@ -642,13 +642,12 @@ function tag_filters(){ ?>
 			// 	} 
 			// 	//return $filters;   
 			// }
-
             if ( ! empty( $type_query->terms ) ) {
                 foreach ( $type_query->terms as $type ) {
                     $query = '';
                     $active = '';
 
-					$query = '?tag='.$type->slug;
+					$query = '?report-tag='.$type->slug;
 
 					// if(isset($filters) && isset($filters['tag'])){  	
 					// 	$curr_types = explode(',',$filters['tag']);
@@ -658,7 +657,7 @@ function tag_filters(){ ?>
 					// 		$query = '';
 					// 	}
                     // }
-					if(count($filters) !== 0 && isset($filters['tag']) && $filters['tag'] === $type->slug){
+					if(isset($filters) && isset($filters['report-tag']) && $filters['report-tag'] === $type->slug){
 						$active = ' active';
 						$query = '';
 					}
@@ -681,11 +680,11 @@ function convo_filters(){
     $filter = check_filters($filter_names,22);
 
     $upcoming_filter = '<a class="filter" href="'.get_permalink(22).'?event-status=upcoming">Upcoming</a>';
-    if(count($filter) !== 0 && isset($filter['event-status']) && $filter['event-status'] === 'upcoming'){ 
+    if(isset($filter) && isset($filter['event-status']) && $filter['event-status'] === 'upcoming'){ 
         $upcoming_filter = '<a class="filter active" href="'.get_permalink(22).'">Upcoming</a>';
     }
     $past_filter = '<a class="filter" href="'.get_permalink(22).'?event-status=past">Past</a>';
-    if(count($filter) !== 0 && isset($filter['event-status']) && $filter['event-status'] === 'past'){ 
+    if(isset($filter) && isset($filter['event-status']) && $filter['event-status'] === 'past'){ 
         $past_filter = '<a class="filter active" href="'.get_permalink(22).'">past</a>';
     }
     return '<div class="filters-wrap"><span class="label">Sort by type:</span><div class="filters-list">'.$upcoming_filter.$past_filter.'</div></div>';
