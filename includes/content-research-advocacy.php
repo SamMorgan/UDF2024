@@ -21,7 +21,7 @@
                 'posts_per_page' => -1
             );
             //if(isset($_GET['tag'])){
-            if(isset($filters)){    
+            if(isset($filters) && isset($_GET['report-tag'])){    
                 $reports_arr['tax_query'] = array(
                     array(
                         'taxonomy' => 'report-tag',
@@ -37,7 +37,8 @@
                 <div class="reports filter-content index<?php //if($reports_query->post_count === 1){ echo ' single-report'; }?>">
                     <?php while ( $reports_query->have_posts() ) : $reports_query->the_post(); ?>
                         <article class="report">
-                            
+                            <?php $pdf = get_field('pdf');?>
+                            <a href="<?php echo $pdf;?>" target="_blank">
                                 <div class="report-cover">
                                     <?php if(has_post_thumbnail()){
                                         $thumb_data = wp_get_attachment_image_src( get_post_thumbnail_id(), 'full' ); 
@@ -49,9 +50,9 @@
                                 <div class="details">  
                                     <h4><?php the_title();?></h4>
                                     <div class="excerpt"><?php the_excerpt();?></div>
-                                    <div class="dl-pdf">→ <a href="'.$pdf.'" target="_blank">Download PDF</a></div>
+                                    <div class="dl-pdf">→ <span href="<?php echo $pdf;?>" target="_blank">Download PDF</span></div>
                                 </div> 
-                                   
+                            </a>       
                         </article>   
                     <?php endwhile;?>
                 </div>          

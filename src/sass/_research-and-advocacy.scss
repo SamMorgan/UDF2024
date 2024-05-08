@@ -14,12 +14,15 @@
         font-family: FFElementaWebProRegular;
         font-size: 1.25rem;
         line-height: 1;
-        a {
+        span {
             border-bottom: 1px solid;
         }
     }
     .excerpt p:last-of-type {
         margin: 0 0 .25em;
+    }
+    a:hover .dl-pdf span {
+        border-bottom: transparent;
     }
 }
 .single-report {

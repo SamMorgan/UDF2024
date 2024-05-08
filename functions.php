@@ -521,6 +521,7 @@ add_action( 'init', 'report_tag', 0 );
 // }
 function check_filters($filter_names,$page_id){
 	//$filters = array();
+	//if(isset($filters)){ unset($filters); }
 	if(isset($_GET[$filter_names[0]]) || (count($filter_names) > 1 && isset($_GET[$filter_names[1]]))){
 		$filters = array();
         foreach($filter_names as $filter_name){
@@ -628,7 +629,6 @@ function tag_filters(){ ?>
                     //'include' => $type_ids 
                 ) 
             );
-
 			$filters = check_filters(array('report-tag'),12);
 			// $filters = null;
 			// if(isset($_GET['tag'])){
@@ -642,6 +642,7 @@ function tag_filters(){ ?>
 			// 	} 
 			// 	//return $filters;   
 			// }
+			//print_r($filters);
             if ( ! empty( $type_query->terms ) ) {
                 foreach ( $type_query->terms as $type ) {
                     $query = '';
@@ -657,7 +658,9 @@ function tag_filters(){ ?>
 					// 		$query = '';
 					// 	}
                     // }
+					//print_r($filters);
 					if(isset($filters) && isset($filters['report-tag']) && $filters['report-tag'] === $type->slug){
+					//if(isset($_GET['report-tag']) && $_GET['report-tag'] === $type->slug){	
 						$active = ' active';
 						$query = '';
 					}

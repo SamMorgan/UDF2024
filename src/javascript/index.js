@@ -98,10 +98,15 @@ function pageFunctions(){
 }
 pageFunctions()
 
-function updateUrl(href,data){
-    var title = data.querySelector('title').innerText;
+function updateUrl(href, data, pageTitle){
+    if(data){
+        const title = data.querySelector('title').innerText;
+        document.title = title;
+    }
+    if(pageTitle){
+        document.title = pageTitle + ' | UDF';
+    }
     window.history.pushState({path:href},'',href);
-    document.title = title;
     scrollValues[window.location.href] = document.body.scrollTop;
 }
 
@@ -171,6 +176,8 @@ function filterFunc(){
 
             sectionContent.style.height = sectionContent.clientHeight + 'px'
 
+            setCookie('filters-'+sectionWrap.id,filter.href,30)
+            
             const tl = gsap.timeline({
                 onComplete: ()=>{ 
 
@@ -209,11 +216,6 @@ function filterFunc(){
                             if(sectionWrap.querySelector('.section-link')){
                                 sectionWrap.querySelector('.section-link').href = filter.href
                             }
-
-                            console.log(filter.href)
-
-                            setCookie('filters-'+sectionWrap.id,filter.href,30)
-
             
                             tl2.to(sectionContent, {
                                 duration: 1,
@@ -452,27 +454,29 @@ mobSubpageNav()
 const openSection = (sectionLink) => {
     const sectionWrap = sectionLink.closest('.section-wrap');
     const sectionContentWrap = sectionWrap.querySelector('.section-content');
-    
     sectionWrap.classList.add('open'); 
+    sectionContentWrap.style.height = 0
+    sectionContentWrap.style.opacity = 0
 
     //http.get(sectionLink.href).then(function (html) {
-    fetch(sectionLink.href)
-        .then(response=>{
-            return response.text()
-        })
-        .then(html=>{    
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, "text/html"); 
-            // const doc = document.createElement("div");
-            // doc.innerHTML = html.data;
-            const sectionContent = doc.querySelector('#'+sectionWrap.id +' .section-content > *');
+    // fetch(sectionLink.href)
+    //     .then(response=>{
+    //         return response.text()
+    //     })
+    //     .then(html=>{    
+    //         const parser = new DOMParser();
+    //         const doc = parser.parseFromString(html, "text/html"); 
+    //         // const doc = document.createElement("div");
+    //         // doc.innerHTML = html.data;
+    //         const sectionContent = doc.querySelector('#'+sectionWrap.id +' .section-content > *');
 
-            sectionContentWrap.style.height = 0
-            sectionContentWrap.style.opacity = 0
+    //         sectionContentWrap.style.height = 0
+    //         sectionContentWrap.style.opacity = 0
 
-            sectionContentWrap.appendChild(sectionContent);
+    //         sectionContentWrap.appendChild(sectionContent);
+            const pageTitle = sectionLink.querySelector('h2') ? sectionLink.querySelector('h2').innerText : null
 
-            updateUrl(sectionLink.href,doc)
+            updateUrl(sectionLink.href, null, pageTitle)
 
             // let openPages = getCookie('openPages') ? getCookie('openPages').split(',') : []
             // openPages.push(sectionWrap.querySelector('.close-section').dataset.path)
@@ -501,12 +505,30 @@ const openSection = (sectionLink) => {
                 opacity: 1
             });
     
-    });
+    //});
 }
 
 const sectionLinks = document.querySelectorAll('.section-link')
 if(sectionLinks){
     sectionLinks.forEach((sectionLink)=> {
+
+        // preload pages //
+        // fetch(sectionLink.href)
+        // .then(function (response) {
+        //     return response.text();
+        //   })
+        //   .then(function (content) {
+        //     let xhrEntry = {
+        //       url: pages[pageIndex],
+        //       time: Date.now(),
+        //       content: content,
+        //     };
+        //     app.router.cache.xhr.push(xhrEntry);
+        //   })
+        //   .catch(function (error) {
+        //     console.error(error);
+        //   });
+
         sectionLink.addEventListener('mouseover',(e)=>{
         //     http.get(sectionLink.href);
             fetch(sectionLink.href).then(response=>{ return response.text() })
@@ -581,22 +603,23 @@ closeSectionLinks.forEach((closeSectionLink)=> {
         const tl = gsap.timeline({
             onComplete: ()=>{ 
                 sectionWrap.classList.remove('open'); 
-                sectionContentWrap.innerHTML = '';
+                //sectionContentWrap.innerHTML = '';
             }
         });
 
         //http.get(closeSectionLink.href).then(function (html) {
-        fetch(closeSectionLink.href)
-            .then(response=>{
-                return response.text()
-            })
-            .then(html=>{    
-                // const doc = document.createElement("div");
-                // doc.innerHTML = html.data;
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, "text/html"); 
-                updateUrl(closeSectionLink.href,doc)
-            });
+        // fetch(closeSectionLink.href)
+        //     .then(response=>{
+        //         return response.text()
+        //     })
+        //     .then(html=>{    
+        //         // const doc = document.createElement("div");
+        //         // doc.innerHTML = html.data;
+        //         const parser = new DOMParser();
+        //         const doc = parser.parseFromString(html, "text/html"); 
+        //         updateUrl(closeSectionLink.href,doc)
+        //     });
+        updateUrl(closeSectionLink.href)
 
         const closePath = closeSectionLink.dataset.path
         //let openPages = getCookie('openPages') ? getCookie('openPages').split(',') : []

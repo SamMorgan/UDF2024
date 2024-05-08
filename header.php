@@ -31,6 +31,13 @@
     */
     -->
     <link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/assets/fonts/Elementa/MyFontsWebfontsKit.css">
+    <link rel="prefetch" href="/public-interest/" />
+    <link rel="prefetch" href="/knowledge-sharing/" />
+    <link rel="prefetch" href="/public-conversations/" />
+    <link rel="prefetch" href="/research-advocacy/" />
+    <link rel="prefetch" href="/education/" />
+    <link rel="prefetch" href="/change/" />
+    <link rel="prefetch" href="/urban-design-forum-australia/" />
     <?php wp_head();?>
 </head>
 <body <?php body_class(); ?> data-barba="wrapper" style="--base-color:#ff775d"> 
